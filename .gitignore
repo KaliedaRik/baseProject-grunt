@@ -1,0 +1,10 @@
+/node_modules
+*.xml
+src
+src.map
+/web_prod/css/app.css
+/web_prod/js/app.js
+/web_prod/index.html
+/web_stage/css/app.css
+/web_stage/js/app.js
+/web_stage/index.html
