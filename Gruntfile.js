@@ -5,6 +5,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg:grunt.file.readJSON('package.json'),
 
+    //TODO: add grunt-babel to the gruntfile
+
     watch: {
       options: {
         livereload: true,
