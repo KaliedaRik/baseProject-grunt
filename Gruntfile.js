@@ -5,15 +5,20 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg:grunt.file.readJSON('package.json'),
 
-    //TODO: add grunt-babel to the gruntfile
-
     watch: {
       options: {
-        livereload: true,
+        // livereload: true,
       },
       toolchain_js: {
-        files: ['web_local/**/*.js'],
-        tasks: ['complexity:generic', 'jshint', 'jsbeautifier:jsfiles', 'concat:js', 'copy:js', 'uglify:app_js'],
+        files: ['web_local/js/*.js'],
+        tasks: ['newer:complexity:generic', 'newer:jshint', 'newer:jsbeautifier:jsfiles', 'concat:js', 'copy:js', 'uglify:app_js'],
+        options: {
+          spawn: false
+        }
+      },
+      toolchain_es6: {
+        files: ['web_local/es6/*.es6'],
+        tasks: ['newer:babel:translate', 'replace:babel_fix', 'newer:complexity:generic', 'newer:jshint', 'newer:jsbeautifier:jsfiles', 'concat:js', 'copy:js', 'uglify:app_js'],
         options: {
           spawn: false
         }
@@ -27,7 +32,7 @@ module.exports = function(grunt) {
       },
       toolchain_html: {
         files: ['web_local/*.html'],
-        tasks: ['jsbeautifier:htmlfiles', 'copy:html', 'htmlmin:htmlfiles'],
+        tasks: ['newer:jsbeautifier:htmlfiles', 'copy:html', 'htmlmin:htmlfiles'],
         options: {
           spawn: false
         }
@@ -39,25 +44,28 @@ module.exports = function(grunt) {
         sourceMap: true
       },
       compile: {
-        files: {
-          'web_local/css/app.css': 'web_local/sass/app.scss'
-        }
+        files: [{
+          src: 'web_local/sass/app.scss',
+          dest: 'web_local/css/app.css'
+        }]
       }
     },
 
     cssmin: {
       target: {
-        files: {
-          'web_prod/css/app.css': 'web_stage/css/app.css'
-        }
+        files: [{
+          src: 'web_stage/css/app.css',
+          dest: 'web_prod/css/app.css'
+        }]
       }
     },
 
     autoprefixer: {
       target: {
-        files: {
-          'web_local/css/app.css': 'web_local/css/app.css'
-        }
+        files: [{
+          src: 'web_local/css/app.css',
+          dest: 'web_local/css/app.css'
+        }]
       }
     },
 
@@ -70,8 +78,34 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'web_stage/',
-          src: ['*.html'],
+          src: '*.html',
           dest: 'web_prod/'
+        }]
+      }
+    },
+
+    babel: {
+      options: {
+        presets: ['es2015']
+      },
+      translate: {
+        files: [{
+          expand: true,
+          cwd: 'web_local/es6/',
+          src: '*.es6',
+          dest: 'web_local/js/',
+          ext: '.js'
+        }]
+      }
+    },
+
+    replace: {
+      babel_fix: {
+        src: ['web_local/js/*.js'],
+        overwrite: true,
+        replacements: [{
+          from: /^'use strict';/,
+          to: "// 'use strict';"
         }]
       }
     },
@@ -114,9 +148,10 @@ module.exports = function(grunt) {
 
     uglify: {
       app_js: {
-        files: {
-          'web_prod/js/app.js': ['web_stage/js/app.js']
-        }
+        files: [{
+          src: 'web_stage/js/app.js',
+          dest: 'web_prod/js/app.js'
+        }]
       }
     },
 

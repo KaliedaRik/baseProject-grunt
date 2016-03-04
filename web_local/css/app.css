@@ -1,8 +1,8 @@
 #div2 {
-  color: blue;
+  color: green;
   opacity: 0.9;
   -webkit-transition: all 4s ease;
           transition: all 4s ease; }
 
 #div1 {
-  color: red; }
+  color: orange; }
