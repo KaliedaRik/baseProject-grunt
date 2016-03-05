@@ -1,6 +1,6 @@
 {
   "name": "baseProject-grunt",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Base project with grunt toolchain",
   "main": "web_local/index.html",
   "scripts": {
