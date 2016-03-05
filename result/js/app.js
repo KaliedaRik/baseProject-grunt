@@ -1,0 +1,1 @@
+var myJS=function(){var a={};return a.hello=function(){var a=document.getElementById("div1");a.innerHTML="Hello, World"},a}();myJS.hello();var myES6=function(){"use strict";var a={};return a.title=function(){var a=document.querySelector("h1");a.innerHTML="This is for everyone!"},a}();myES6.title();

@@ -7,7 +7,7 @@ var myES6 = function() {
 
 	exports.title = function() {
 		var el = document.querySelector('h1');
-		el.innerHTML = 'This is for all!';
+		el.innerHTML = 'This is for everyone!';
 	};
 
 	return exports;

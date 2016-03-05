@@ -5,10 +5,19 @@ var myES6 = (function() {
 
 	exports.title = function() {
 		let el = document.querySelector('h1');
-		el.innerHTML = 'This is for all!';
+		el.innerHTML = 'This is for everyone!';
 	};
 
 	return exports;
 }());
 
 myES6.title();
+
+
+
+
+
+
+
+
+

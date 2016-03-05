@@ -6,32 +6,29 @@ module.exports = function(grunt) {
     pkg:grunt.file.readJSON('package.json'),
 
     watch: {
-      options: {
-        // livereload: true,
-      },
       toolchain_js: {
-        files: ['web_local/js/*.js'],
-        tasks: ['newer:complexity:generic', 'newer:jshint', 'newer:jsbeautifier:jsfiles', 'concat:js', 'copy:js', 'uglify:app_js'],
+        files: ['source/js/*.js'],
+        tasks: ['newer:jshint', 'newer:jsbeautifier:jsfiles', 'newer:complexity:generic', 'concat:js', 'copy:js', 'uglify:app_js'],
         options: {
           spawn: false
         }
       },
       toolchain_es6: {
-        files: ['web_local/es6/*.es6'],
-        tasks: ['newer:babel:translate', 'replace:babel_fix', 'newer:complexity:generic', 'newer:jshint', 'newer:jsbeautifier:jsfiles', 'concat:js', 'copy:js', 'uglify:app_js'],
+        files: ['source/es6/*.es6'],
+        tasks: ['newer:babel:translate', 'replace:babel_fix', 'newer:complexity:generic'],
         options: {
           spawn: false
         }
       },
       toolchain_sass: {
-        files: ['web_local/sass/*.scss'],
+        files: ['source/sass/*.scss'],
         tasks: ['sass:compile', 'autoprefixer:target', 'copy:css', 'cssmin:target'],
         options: {
-          spawn: false
+          spawn: true
         }
       },
       toolchain_html: {
-        files: ['web_local/*.html'],
+        files: ['source/*.html'],
         tasks: ['newer:jsbeautifier:htmlfiles', 'copy:html', 'htmlmin:htmlfiles'],
         options: {
           spawn: false
@@ -45,8 +42,8 @@ module.exports = function(grunt) {
       },
       compile: {
         files: [{
-          src: 'web_local/sass/app.scss',
-          dest: 'web_local/css/app.css'
+          src: 'source/sass/app.scss',
+          dest: 'source/css/app.css'
         }]
       }
     },
@@ -54,8 +51,8 @@ module.exports = function(grunt) {
     cssmin: {
       target: {
         files: [{
-          src: 'web_stage/css/app.css',
-          dest: 'web_prod/css/app.css'
+          src: 'construct/css/app.css',
+          dest: 'result/css/app.css'
         }]
       }
     },
@@ -63,8 +60,8 @@ module.exports = function(grunt) {
     autoprefixer: {
       target: {
         files: [{
-          src: 'web_local/css/app.css',
-          dest: 'web_local/css/app.css'
+          src: 'source/css/app.css',
+          dest: 'source/css/app.css'
         }]
       }
     },
@@ -77,9 +74,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: 'web_stage/',
+          cwd: 'construct/',
           src: '*.html',
-          dest: 'web_prod/'
+          dest: 'result/'
         }]
       }
     },
@@ -91,9 +88,9 @@ module.exports = function(grunt) {
       translate: {
         files: [{
           expand: true,
-          cwd: 'web_local/es6/',
+          cwd: 'source/es6/',
           src: '*.es6',
-          dest: 'web_local/js/',
+          dest: 'source/js/',
           ext: '.js'
         }]
       }
@@ -101,7 +98,7 @@ module.exports = function(grunt) {
 
     replace: {
       babel_fix: {
-        src: ['web_local/js/*.js'],
+        src: ['source/js/*.js'],
         overwrite: true,
         replacements: [{
           from: /^'use strict';/,
@@ -125,10 +122,10 @@ module.exports = function(grunt) {
         }
       },
       htmlfiles: {
-        src: ['web_local/*.html']
+        src: ['source/*.html']
       },
       jsfiles: {
-        src: ['web_local/js/*.js']
+        src: ['source/js/*.js']
       }
     },
 
@@ -137,20 +134,20 @@ module.exports = function(grunt) {
         banner: '/* Warning: file regenerated automatically on each file save */\n\n'
       },
       js: {
-        src: ['web_local/js/*.js', '!web_local/js/app.js'],
-        dest: 'web_local/js/app.js'
+        src: ['source/js/*.js', '!source/js/app.js'],
+        dest: 'source/js/app.js'
       }
     },
 
     jshint: {
-      all: ['web_local/js/*.js']
+      all: ['source/js/*.js']
     },
 
     uglify: {
       app_js: {
         files: [{
-          src: 'web_stage/js/app.js',
-          dest: 'web_prod/js/app.js'
+          src: 'construct/js/app.js',
+          dest: 'result/js/app.js'
         }]
       }
     },
@@ -158,33 +155,30 @@ module.exports = function(grunt) {
     copy: {
       js: {
         expand: true,
-        cwd: 'web_local/js/',
+        cwd: 'source/js/',
         src: 'app.js',
-        dest: 'web_stage/js/'
+        dest: 'construct/js/'
       },
       css: {
         expand: true,
-        cwd: 'web_local/css/',
+        cwd: 'source/css/',
         src: '*.*',
-        dest: 'web_stage/css/'
+        dest: 'construct/css/'
       },
       html: {
         expand: true,
-        cwd: 'web_local/',
+        cwd: 'source/',
         src: '*.html',
-        dest: 'web_stage/'
+        dest: 'construct/'
       }
     },
 
     complexity: {
       generic: {
-        src: ['web_local/js/*.js'],
+        src: ['source/js/*.js'],
         exclude: [],
         options: {
           breakOnErrors: true,
-          jsLintXML: 'report.xml',         // create XML JSLint-like report
-          checkstyleXML: 'checkstyle.xml', // create checkstyle report
-          pmdXML: 'pmd.xml',               // create pmd report
           errorsOnly: false,               // show only maintainability errors
           cyclomatic: [3, 7, 12],          // or optionally a single value, like 3
           halstead: [8, 13, 20],           // or optionally a single value, like 8
@@ -196,35 +190,35 @@ module.exports = function(grunt) {
     },
 
     connect: {
-      server_local: {
+      source: {
         options: {
+          hostname: 'localhost',
           port: 9001,
-          base: './web_local',
-          open: true,
-          livereload: true
+          base: './source',
+          open: true
         }
       },
-      server_stage: {
+      test: {
         options: {
+          hostname: 'localhost',
           port: 9001,
-          base: './web_stage',
-          open: true,
-          livereload: true
+          base: './construct',
+          open: true
         }
       },
-      server_prod: {
+      prod: {
         options: {
+          hostname: 'localhost',
           port: 9001,
-          base: './web_prod',
-          open: true,
-          livereload: true
+          base: './result',
+          open: true
         }
       }
     }
   });
 
-  grunt.registerTask('local_server', ['connect:server_local', 'watch']);
-  grunt.registerTask('stage_server', ['connect:server_stage', 'watch']);
-  grunt.registerTask('prod_server', ['connect:server_prod', 'watch']);
+  grunt.registerTask('source_server', ['connect:source', 'watch']);
+  grunt.registerTask('test_server', ['connect:test', 'watch']);
+  grunt.registerTask('server', ['connect:prod', 'watch']);
 
 };

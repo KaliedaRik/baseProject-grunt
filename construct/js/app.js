@@ -6,7 +6,7 @@ var myJS = (function() {
 
 	exports.hello = function() {
 		var el = document.getElementById('div1');
-		el.innerHTML = 'Hello, World!';
+		el.innerHTML = 'Hello, World';
 	};
 
 	return exports;
@@ -23,7 +23,7 @@ var myES6 = function() {
 
 	exports.title = function() {
 		var el = document.querySelector('h1');
-		el.innerHTML = 'This is for all!';
+		el.innerHTML = 'This is for everyone!';
 	};
 
 	return exports;

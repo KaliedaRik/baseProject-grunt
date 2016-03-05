@@ -4,7 +4,7 @@ var myJS = (function() {
 
 	exports.hello = function() {
 		var el = document.getElementById('div1');
-		el.innerHTML = 'Hello, World!';
+		el.innerHTML = 'Hello, World';
 	};
 
 	return exports;

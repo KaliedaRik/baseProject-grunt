@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "app.css",
+	"sources": [
+		"../sass/app.scss",
+		"../sass/_test.scss"
+	],
+	"mappings": "ACAA,KAAK,CAAA;EACJ,KAAK,EAAE,IAAK;EACZ,OAAO,EAAE,GAAI;EACb,UAAU,EAAE,WAAY,GACxB;;ADFD,KAAK,CAAA;EACJ,KAAK,EAAE,GAAI,GACX",
+	"names": []
+}
